@@ -99,15 +99,19 @@ function {p}in_table(data, ucs) {{
     return false;
 }}
 
-/* Return the width of character c, or a special negative value. */
+/**
+ * Return the width of character c, or a special negative value.
+ * @param { string | number } c
+ * @returns { number }
+ */
 function {p}wcwidth(c) {{
     if (typeof c === "string")
         c = c.codePointAt();    /* Checking for if there's only one code point? Too much code. */
     else if (typeof c !== "number")
         throw new TypeError("Argument must be an integer or a string.");
     
-    if (c < 0 || c > 0x10FFFF)
-        throw new RangeError("Argument must be inside Unicode code point range (0-U+10FFFF).");
+    if (c < 0 || c > 0x10FFFF || !Number.IsInteger(c))
+        throw new RangeError("Argument must be an integer inside Unicode code point range (0-U+10FFFF).");
 
     if ({p}in_table({p}ascii_table, c))
         return 1;
